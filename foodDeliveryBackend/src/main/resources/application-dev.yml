@@ -21,15 +21,14 @@ spring:
     hikari:
       auto-commit: false
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/syp
+    url: jdbc:postgresql://localhost:5432/syp_db
     username: postgres
-    password: postgres
+    password: root
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
     properties:
-      jpa:
         hibernate:
           dialect: org.hibernate.dialect.PostgreSQLDialect
 
