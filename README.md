@@ -4,6 +4,10 @@ A **full-stack Food Delivery System** built using **Spring Boot** (Backend) and 
 This project allows users to **browse restaurants**, **place orders**, and **track deliveries in real-time**.  
 It includes separate dashboards for **Admin**, **Restaurant Owners**, and **Customers**.
 
+- Designed and implemented a **scalable user address management ** using Spring Boot and JPA, handling multiple addresses per user.  
+- Built **hierarchical location tables** (Province → District → Municipality) with bidirectional and unidirectional relationships for optimized queries and frontend filtering.  
+- Enabled **shared addresses** with Many-to-Many mapping, preventing data duplication and ensuring safe deletion.  
+
 ---
 
 ## Requirements
@@ -14,7 +18,6 @@ It includes separate dashboards for **Admin**, **Restaurant Owners**, and **Cust
 - **PostgreSQL** – Relational database for data storage  
 
 ---
-
 ## Configuration
 
 `application-dev.yml` has been added to `.gitignore` for privacy.  
