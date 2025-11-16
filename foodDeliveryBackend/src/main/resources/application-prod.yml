@@ -1,0 +1,54 @@
+management:
+  endpoint:
+    show-details: never
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+logging:
+  level:
+    root: INFO
+    com:
+      dikshanta:
+        food:
+          delivery:
+            foodDeliveryBackend: INFO
+
+spring:
+  security:
+    user:
+      name: ${SPRING_SECURITY_USER:root}
+      password: ${SPRING_SECURITY_PASSWORD:root}
+
+  datasource:
+    hikari:
+      auto-commit: false
+    driver-class-name: org.postgresql.Driver
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://db:5432/syp_db}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:root}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
