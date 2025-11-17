@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-
 @Entity
 @Data
 @NoArgsConstructor
@@ -34,5 +33,7 @@ public class User {
     @Column(nullable = false)
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
     private List<Address> addresses;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private UserImage userImage;
 
 }
