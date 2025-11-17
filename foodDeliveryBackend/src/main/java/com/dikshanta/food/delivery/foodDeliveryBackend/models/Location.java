@@ -25,6 +25,8 @@ public class Location {
     @ManyToOne
     @JoinColumn(name = "municipality_id", referencedColumnName = "Id")
     private Municipality municipality;
+    @Column(nullable = false)
     private String fullLocation;
+
 
 }

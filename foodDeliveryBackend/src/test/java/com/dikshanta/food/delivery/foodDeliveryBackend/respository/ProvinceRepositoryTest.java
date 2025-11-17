@@ -22,7 +22,8 @@ public class ProvinceRepositoryTest {
 
     @Test
     public void testProvinceRepository() {
-        municipalityRepository.findMunicipalityByProvince(1L).forEach(System.out::println);
+        municipalityRepository.findMunicipalityByDistrict(2L).forEach(System.out::println);
+
 
     }
 }

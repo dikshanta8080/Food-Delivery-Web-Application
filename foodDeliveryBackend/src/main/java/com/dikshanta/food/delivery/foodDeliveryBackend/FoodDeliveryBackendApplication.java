@@ -2,11 +2,13 @@ package com.dikshanta.food.delivery.foodDeliveryBackend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication
+@EnableJpaAuditing
 public class FoodDeliveryBackendApplication {
-	public static void main(String[] args) {
-		SpringApplication.run(FoodDeliveryBackendApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(FoodDeliveryBackendApplication.class, args);
+    }
 
 }
