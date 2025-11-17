@@ -18,7 +18,6 @@ public interface MunicipalityRepository extends JpaRepository<Municipality, Long
             """)
     List<MunicipalityProjection> findAllMunicipalities();
 
-
     @Query("""
             SELECT m.id AS id,
                    m.name AS name

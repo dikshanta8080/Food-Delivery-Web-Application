@@ -45,7 +45,6 @@ public class JsonLoader implements CommandLineRunner {
             province.setName(pj.getName());
             provinceRepo.save(province);
 
-
             if (pj.getDistricts() != null) {
                 Arrays.stream(pj.getDistricts()).forEach(dj -> {
                     District district = new District();
