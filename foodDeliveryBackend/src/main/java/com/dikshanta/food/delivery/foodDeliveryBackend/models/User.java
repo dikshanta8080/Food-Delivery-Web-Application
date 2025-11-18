@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Table(name = "\"user\"")
-public class User extends Auditable {
+public class User extends DateAuditable {
     @Column(nullable = false)
     @OneToMany(cascade = CascadeType.ALL,
             orphanRemoval = true,
