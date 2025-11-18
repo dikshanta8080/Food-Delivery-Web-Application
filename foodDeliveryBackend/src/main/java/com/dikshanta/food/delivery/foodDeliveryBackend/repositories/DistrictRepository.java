@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface DistrictRepository extends JpaRepository<District, Location> {
@@ -21,5 +22,6 @@ public interface DistrictRepository extends JpaRepository<District, Location> {
             "FROM District d")
     List<DistrictDto> findAllDistrict();
 
+    Optional<District> findByName(String name);
 
 }

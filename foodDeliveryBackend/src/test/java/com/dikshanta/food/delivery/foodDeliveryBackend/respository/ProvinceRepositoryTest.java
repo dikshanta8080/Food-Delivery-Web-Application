@@ -1,28 +1,20 @@
 package com.dikshanta.food.delivery.foodDeliveryBackend.respository;
 
-import com.dikshanta.food.delivery.foodDeliveryBackend.repositories.DistrictRepository;
-import com.dikshanta.food.delivery.foodDeliveryBackend.repositories.MunicipalityRepository;
-import com.dikshanta.food.delivery.foodDeliveryBackend.repositories.ProvinceRepository;
+import com.dikshanta.food.delivery.foodDeliveryBackend.repositories.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+@Slf4j
 @SpringBootTest
 public class ProvinceRepositoryTest {
-    private final ProvinceRepository provinceRepository;
-    private final DistrictRepository districtRepository;
-    private final MunicipalityRepository municipalityRepository;
-
     @Autowired
-    public ProvinceRepositoryTest(ProvinceRepository provinceRepository, DistrictRepository districtRepository, MunicipalityRepository municipalityRepository) {
-        this.provinceRepository = provinceRepository;
-        this.districtRepository = districtRepository;
-        this.municipalityRepository = municipalityRepository;
-    }
+    private UserRepository userRepository;
+
 
     @Test
     public void testProvinceRepository() {
-        municipalityRepository.findMunicipalityByDistrict(2L).forEach(System.out::println);
 
 
     }

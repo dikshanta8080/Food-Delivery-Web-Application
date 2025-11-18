@@ -7,10 +7,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProvinceRepository extends JpaRepository<Province, Long> {
     @Query("SELECT new com.dikshanta.food.delivery.foodDeliveryBackend.dtos.ProvinceDto(" +
             " p.id,p.name) FROM Province p")
     List<ProvinceDto> getAllProvince();
+
+    Optional<Province> findByName(String name);
 }

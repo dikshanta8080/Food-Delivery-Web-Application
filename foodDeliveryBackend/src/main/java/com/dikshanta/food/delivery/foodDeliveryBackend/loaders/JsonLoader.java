@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 
 @Component
+@Order(1)
 public class JsonLoader implements CommandLineRunner {
 
     @Autowired
@@ -42,7 +44,7 @@ public class JsonLoader implements CommandLineRunner {
 
         Arrays.stream(provincesJson).forEach(pj -> {
             Province province = new Province();
-            province.setName(pj.getName());
+            province.setName(pj.getName().split(" ")[0]);
             provinceRepo.save(province);
 
             if (pj.getDistricts() != null) {

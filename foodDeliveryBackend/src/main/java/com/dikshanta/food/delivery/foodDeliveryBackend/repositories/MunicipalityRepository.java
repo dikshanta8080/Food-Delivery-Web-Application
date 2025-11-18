@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface MunicipalityRepository extends JpaRepository<Municipality, Long> {
@@ -39,5 +40,7 @@ public interface MunicipalityRepository extends JpaRepository<Municipality, Long
             WHERE p.id = :id
             """)
     List<MunicipalityDto> findMunicipalityByProvince(@Param("id") Long id);
+
+    Optional<Municipality> findByName(String name);
 
 }

@@ -1,31 +1,34 @@
 package com.dikshanta.food.delivery.foodDeliveryBackend.services;
 
-import com.dikshanta.food.delivery.foodDeliveryBackend.models.User;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
-public class UserPrincipal implements UserDetails {
-    private final User user;
+@RequiredArgsConstructor
 
-    public UserPrincipal(User user) {
-        this.user = user;
-    }
+public class UserPrincipal implements UserDetails {
+    @Getter
+    private final Long id;
+    private final String email;
+    private final String password;
+    private final Collection<? extends GrantedAuthority> authorities;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return user.getRole().getAuthorities();
+        return authorities;
     }
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return user.getEmail();
+        return email;
     }
 
     @Override
