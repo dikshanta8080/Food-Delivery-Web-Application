@@ -1,7 +1,9 @@
 package com.dikshanta.food.delivery.foodDeliveryBackend.loaders;
 
+import com.dikshanta.food.delivery.foodDeliveryBackend.dtos.GeocodeCoordinates;
 import com.dikshanta.food.delivery.foodDeliveryBackend.models.*;
 import com.dikshanta.food.delivery.foodDeliveryBackend.repositories.*;
+import com.dikshanta.food.delivery.foodDeliveryBackend.services.GeocodingService;
 import com.dikshanta.food.delivery.foodDeliveryBackend.utils.Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -24,6 +26,7 @@ public class AdminLoader implements CommandLineRunner {
     private final ProvinceRepository provinceRepository;
     private final DistrictRepository districtRepository;
     private final MunicipalityRepository municipalityRepository;
+    private final GeocodingService geocodingService;
 
 
     @Override
@@ -33,15 +36,15 @@ public class AdminLoader implements CommandLineRunner {
             Province province = provinceRepository.findByName("Koshi").orElseThrow(() -> new IllegalStateException("Province 'koshi' not found"));
             District district = districtRepository.findByName("Sunsari").orElseThrow(() -> new IllegalStateException("District 'Sunsari' not found"));
             Municipality municipality = municipalityRepository.findByName("Itahari").orElseThrow(() -> new IllegalStateException("Municipality 'Itahari' not found"));
-            double lats = 23.0;
-            double longs = 40.6;
+            GeocodeCoordinates geocodeCoordinates = geocodingService.geocodeAddress(province.getName(), district.getName(), municipality.getName());
             Address address = Address.builder()
-                    .latitude(lats)
-                    .longitude(longs)
+                    .latitude(geocodeCoordinates.getLatitude())
+                    .longitude(geocodeCoordinates.getLongitude())
                     .province(province)
                     .district(district)
                     .municipality(municipality)
                     .fullAddress(String.format("%s-%s %s Nepal", municipality.getName(), district.getName(), province.getName()))
+                    .detailedAddress("Itahari 17 kanchichowk near police station in chatara road")
                     .build();
             User admin = User.builder()
                     .name(utils.getAdmin().getName())

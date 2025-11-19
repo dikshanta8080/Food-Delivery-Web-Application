@@ -21,6 +21,8 @@ public class Address extends DateAuditable {
     @Column(nullable = true)
     private Double longitude;
     private String fullAddress;
+    @Column(length = 5000)
+    private String detailedAddress;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
