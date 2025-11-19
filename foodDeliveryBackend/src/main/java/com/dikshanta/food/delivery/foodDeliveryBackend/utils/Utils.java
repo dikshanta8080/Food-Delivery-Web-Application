@@ -17,6 +17,7 @@ public class Utils {
     private Admin admin;
     private Jwt jwt;
     private Refresh refresh;
+    private Geocode geocode;
 
     @Data
     @Getter
@@ -38,5 +39,11 @@ public class Utils {
     @Getter
     public static class Refresh {
         private int expiry;
+    }
+
+    @Data
+    @Getter
+    public static class Geocode {
+        private String api;
     }
 }
