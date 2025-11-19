@@ -35,6 +35,7 @@ public class SecurityConfig {
     private static final String adminRoute = "/api/v1/admin/**";
     private static final String restaurantManagementRoute = "/api/v1/restaurant/**";
     private static final String publicRoute = "/api/v1/public/**";
+    private static final String authRoute = "/api/v1/auth/**";
     private final AccessDeniedHandler accessDeniedHandler;
     private final AuthenticationEntryPoint authenticationEntryPoint;
 
@@ -49,7 +50,14 @@ public class SecurityConfig {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(req -> req
-
+                        .requestMatchers(authRoute).permitAll()
+                        .requestMatchers(
+                                "/swagger-ui.html",
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/swagger-resources/**",
+                                "/webjars/**"
+                        ).permitAll()
                         .requestMatchers(adminRoute)
                         .hasRole(ADMIN.name())
                         .requestMatchers("GET", adminRoute).hasAuthority(ADMIN_READ.getPermissionName())
