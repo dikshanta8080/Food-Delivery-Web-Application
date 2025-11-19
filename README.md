@@ -6,13 +6,11 @@ It includes separate dashboards for **Admin**, **Restaurant Owners**, and **Cust
 
 - Designed and implemented a **scalable user address management ** using Spring Boot and JPA, handling multiple addresses per user.  
 - Built **hierarchical location tables** (Province → District → Municipality) with bidirectional and unidirectional relationships for optimized queries and frontend filtering.  
-- Enabled **shared addresses** with Many-to-Many mapping, preventing data duplication and ensuring safe deletion.  
-
 ---
 
 ## Requirements
 
-- **IntelliJ IDEA** – Recommended IDE for development  
+- **IntelliJ IDEA**   
 - **JDK Eclipse Adoptium 21** – Java Development Kit  
 - **Maven** – Build and dependency management tool  
 - **PostgreSQL** – Relational database for data storage  
