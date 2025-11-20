@@ -27,8 +27,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.List;
 
 import static com.dikshanta.food.delivery.foodDeliveryBackend.enums.Permission.*;
-import static com.dikshanta.food.delivery.foodDeliveryBackend.enums.Role.ADMIN;
-import static com.dikshanta.food.delivery.foodDeliveryBackend.enums.Role.RESTAURANT;
+import static com.dikshanta.food.delivery.foodDeliveryBackend.enums.Role.*;
 
 @Configuration
 @EnableWebSecurity
@@ -39,6 +38,7 @@ public class SecurityConfig {
     private static final String restaurantManagementRoute = "/api/v1/restaurant/**";
     private static final String publicRoute = "/api/v1/public/**";
     private static final String authRoute = "/api/v1/auth/**";
+    private static final String customerRoute = "/api/v1/customer/**";
     private final AccessDeniedHandler accessDeniedHandler;
     private final AuthenticationEntryPoint authenticationEntryPoint;
     private final JwtFilter jwtFilter;
@@ -69,6 +69,12 @@ public class SecurityConfig {
                         .requestMatchers("POST", adminRoute).hasAuthority(ADMIN_CREATE.getPermissionName())
                         .requestMatchers("PUT", adminRoute).hasAuthority(ADMIN_UPDATE.getPermissionName())
                         .requestMatchers("DELETE", adminRoute).hasAuthority(ADMIN_DELETE.getPermissionName())
+
+                        .requestMatchers(customerRoute).hasAnyRole(ADMIN.name(), RESTAURANT.name(), CUSTOMER.name())
+                        .requestMatchers("GET", customerRoute).hasAnyAuthority(ADMIN_READ.getPermissionName(), RESTAURANT_READ.getPermissionName(), CUSTOMER_READ.getPermissionName())
+                        .requestMatchers("POST", customerRoute).hasAnyAuthority(ADMIN_CREATE.getPermissionName(), RESTAURANT_CREATE.getPermissionName(), CUSTOMER_CREATE.getPermissionName())
+                        .requestMatchers("PUT", customerRoute).hasAnyAuthority(ADMIN_UPDATE.getPermissionName(), RESTAURANT_UPDATE.getPermissionName(), CUSTOMER_UPDATE.getPermissionName())
+                        .requestMatchers("DELETE", customerRoute).hasAnyAuthority(ADMIN_DELETE.getPermissionName(), RESTAURANT_DELETE.getPermissionName(), CUSTOMER_DELETE.getPermissionName())
 
                         .requestMatchers(restaurantManagementRoute)
                         .hasAnyRole(ADMIN.name(), RESTAURANT.name())

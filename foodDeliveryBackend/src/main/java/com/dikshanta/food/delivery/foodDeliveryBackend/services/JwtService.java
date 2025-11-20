@@ -1,6 +1,6 @@
 package com.dikshanta.food.delivery.foodDeliveryBackend.services;
 
-import com.dikshanta.food.delivery.foodDeliveryBackend.enums.Role;
+import com.dikshanta.food.delivery.foodDeliveryBackend.models.User;
 import com.dikshanta.food.delivery.foodDeliveryBackend.utils.Utils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -23,13 +23,14 @@ public class JwtService {
         return Keys.hmacShaKeyFor(secretBytes);
     }
 
-    public String getJwt(String email, Role role) {
+    public String getJwt(User user) {
         return Jwts.builder()
-                .subject(email)
+                .subject(user.getEmail())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + 60 * 1000L * utils.getJwt().getExpiry()))
                 .signWith(generateKey())
-                .claim("Role", role)
+                .claim("Role", user.getRole())
+                .claim("id", user.getId())
                 .compact();
     }
 

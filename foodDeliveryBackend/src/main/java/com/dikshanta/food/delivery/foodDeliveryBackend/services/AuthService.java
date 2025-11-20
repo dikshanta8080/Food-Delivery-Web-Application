@@ -36,7 +36,7 @@ public class AuthService {
 
             User user = userRepository.findByEmail(requestDoo.getEmail()).orElseThrow(() -> new UserDoesNotExistsException("User with this email does not exists"));
 
-            String jwt = jwtService.getJwt(user.getEmail(), user.getRole());
+            String jwt = jwtService.getJwt(user);
             RefreshToken refreshToken = refreshTokenService.getRefreshToken(user.getEmail());
 
             return LoginResponseDto.builder()
@@ -61,7 +61,7 @@ public class AuthService {
 
         RefreshToken newSavedRefreshToken = refreshTokenRepository.save(newRefreshToken);
 
-        String accessToken = jwtService.getJwt(newRefreshToken.getUser().getEmail(), newSavedRefreshToken.getUser().getRole());
+        String accessToken = jwtService.getJwt(newRefreshToken.getUser());
         return TokenRefreshResponseDoo.builder()
                 .accessToken(accessToken)
                 .refreshToken(newRefreshToken.getToken())

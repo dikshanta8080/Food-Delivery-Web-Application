@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/admin")
-public class AdminController {
+@RequestMapping("api/v1/restaurant")
+public class RestaurantManagementController {
     @GetMapping("/greet")
-    public ResponseEntity<String> greetAdmin() {
-        return new ResponseEntity<>("Hello admin", HttpStatus.OK);
+    public ResponseEntity<String> greetRestaurant() {
+        return new ResponseEntity<>("Hello manager", HttpStatus.OK);
     }
 }
