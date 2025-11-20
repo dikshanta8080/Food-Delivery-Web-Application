@@ -8,12 +8,13 @@ import com.dikshanta.food.delivery.foodDeliveryBackend.mappers.AddressMapper;
 import com.dikshanta.food.delivery.foodDeliveryBackend.models.*;
 import com.dikshanta.food.delivery.foodDeliveryBackend.repositories.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import static com.dikshanta.food.delivery.foodDeliveryBackend.enums.Role.CUSTOMER;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -26,7 +27,7 @@ public class UserService {
     private final GeocodingService geocodingService;
     private final PasswordEncoder passwordEncoder;
 
-    @Transactional
+
     public UserRegistrationResponseDto createCustomer(UserRegistrationRequestDto requestDto) {
         if (userRepository.existsByEmail(requestDto.getEmail())) {
             throw new UserAlreadyExistsException("User with this email already exists");
@@ -38,6 +39,9 @@ public class UserService {
         Municipality municipality = municipalityRepository.findById(requestDto.getMunicipalityId()).orElseThrow(() -> new IllegalStateException("Municipality with this id does not exists"));
 
         GeocodeCoordinates coordinates = geocodingService.geocodeAddress(province.getName(), district.getName(), municipality.getName());
+        log.debug(province.getName());
+        log.debug(district.getName());
+        log.debug(municipality.getName());
 
         Address address = addressMapper.apply(province, district, municipality, coordinates);
 

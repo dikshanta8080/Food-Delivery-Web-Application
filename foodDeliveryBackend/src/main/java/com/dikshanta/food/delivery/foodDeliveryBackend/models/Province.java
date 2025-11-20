@@ -1,15 +1,13 @@
 package com.dikshanta.food.delivery.foodDeliveryBackend.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -20,8 +18,6 @@ public class Province {
     private Long id;
     @Column(nullable = false, unique = true)
     private String name;
-    @OneToOne(mappedBy = "province")
-    private Address address;
     @OneToMany(mappedBy = "province")
     private List<District> districts;
 }

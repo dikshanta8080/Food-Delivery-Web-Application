@@ -1,6 +1,5 @@
 package com.dikshanta.food.delivery.foodDeliveryBackend.respository;
 
-import com.dikshanta.food.delivery.foodDeliveryBackend.dtos.GeocodeCoordinates;
 import com.dikshanta.food.delivery.foodDeliveryBackend.repositories.UserRepository;
 import com.dikshanta.food.delivery.foodDeliveryBackend.services.GeocodingService;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +19,6 @@ public class ProvinceRepositoryTest {
     @Test
     public void testProvinceRepository() {
 
-        GeocodeCoordinates geocodeCoordinates = geocodingService.geocodeAddress("Koshi", "Sunsari", "Itahari");
-        System.out.println(geocodeCoordinates);
+
     }
 }
