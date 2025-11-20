@@ -24,4 +24,6 @@ public interface DistrictRepository extends JpaRepository<District, Location> {
 
     Optional<District> findByName(String name);
 
+    Optional<District> findById(Long id);
+
 }
