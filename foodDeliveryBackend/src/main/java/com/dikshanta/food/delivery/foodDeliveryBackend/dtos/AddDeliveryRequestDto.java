@@ -12,8 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class AddDeliveryRequestDto {
-    @NotNull(message = "Please provide valid userId")
-    private Long userId;
     @NotNull(message = "Please provide valid province id")
     private Long provinceId;
     @NotNull(message = "Please provide valid district id")

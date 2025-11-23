@@ -17,7 +17,6 @@ import java.util.List;
 @Builder
 @Table(name = "\"user\"")
 public class User extends DateAuditable {
-
     @OneToMany(
             cascade = CascadeType.ALL,
             orphanRemoval = true,
@@ -25,7 +24,6 @@ public class User extends DateAuditable {
             fetch = FetchType.LAZY
     )
     private List<Address> addresses;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

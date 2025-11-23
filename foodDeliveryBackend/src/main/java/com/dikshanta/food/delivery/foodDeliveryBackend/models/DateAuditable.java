@@ -15,8 +15,8 @@ public abstract class DateAuditable {
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
-
     @Column(nullable = true, insertable = false)
     @LastModifiedDate
     private LocalDateTime lastModifiedAt;
+
 }

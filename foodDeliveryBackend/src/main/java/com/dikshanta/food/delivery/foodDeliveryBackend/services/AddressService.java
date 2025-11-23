@@ -9,9 +9,12 @@ import com.dikshanta.food.delivery.foodDeliveryBackend.mappers.AddressMapper;
 import com.dikshanta.food.delivery.foodDeliveryBackend.models.*;
 import com.dikshanta.food.delivery.foodDeliveryBackend.repositories.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AddressService {
@@ -24,9 +27,15 @@ public class AddressService {
     private final GeocodingService geocodingService;
     private final AddDeliveryAddressResponseDtoMapper deliveryAddressResponseDtoMapper;
 
-    @Transactional
     public AddDeliveryResponseDto addDeliveryAddress(AddDeliveryRequestDto requestDto) {
-        User user = getUser(requestDto.getUserId());
+        //start
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+        log.debug(userPrincipal.getUsername());
+        //end
+        
+        // currently logged-in user
+        User user = getUser(userPrincipal.getId());
         Province province = getProvince(requestDto.getProvinceId());
         District district = getDistrict(requestDto.getDistrictId());
         Municipality municipality = getMunicipality(requestDto.getMunicipalityId());
@@ -52,21 +61,25 @@ public class AddressService {
     }
 
     private Municipality getMunicipality(Long municipalityId) {
-        return municipalityRepository.findById(municipalityId).orElseThrow(() -> new MunicipalityNotFoundException("Municipality with this id does not exists"));
+        return municipalityRepository.findById(municipalityId).orElseThrow(() ->
+                new MunicipalityNotFoundException("Municipality with this id does not exists"));
 
     }
 
     private District getDistrict(Long districtId) {
-        return districtRepository.findById(districtId).orElseThrow(() -> new DistrictNotFoundException("District with this id does not exists"));
+        return districtRepository.findById(districtId).orElseThrow(() ->
+                new DistrictNotFoundException("District with this id does not exists"));
     }
 
     private Province getProvince(Long provinceId) {
-        return provinceRepository.findById(provinceId).orElseThrow(() -> new ProvinceNotFoundException("Province with this id does not exists"));
+        return provinceRepository.findById(provinceId).orElseThrow(() ->
+                new ProvinceNotFoundException("Province with this id does not exists"));
 
     }
 
     private User getUser(Long userId) {
-        return userRepository.findById(userId).orElseThrow(() -> new UserDoesNotExistsException("User with this id does not exists"));
+        return userRepository.findById(userId).orElseThrow(() ->
+                new UserDoesNotExistsException("User with this id does not exists"));
 
     }
 }

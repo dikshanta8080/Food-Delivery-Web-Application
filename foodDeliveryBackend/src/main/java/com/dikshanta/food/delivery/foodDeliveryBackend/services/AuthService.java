@@ -7,6 +7,7 @@ import com.dikshanta.food.delivery.foodDeliveryBackend.dtos.TokenRefreshResponse
 import com.dikshanta.food.delivery.foodDeliveryBackend.exceptions.RefreshTokenDoesNotExistsException;
 import com.dikshanta.food.delivery.foodDeliveryBackend.exceptions.RefreshTokenExpiredException;
 import com.dikshanta.food.delivery.foodDeliveryBackend.exceptions.UserDoesNotExistsException;
+import com.dikshanta.food.delivery.foodDeliveryBackend.mappers.UserMapper;
 import com.dikshanta.food.delivery.foodDeliveryBackend.models.RefreshToken;
 import com.dikshanta.food.delivery.foodDeliveryBackend.models.User;
 import com.dikshanta.food.delivery.foodDeliveryBackend.repositories.RefreshTokenRepository;
@@ -28,6 +29,7 @@ public class AuthService {
     private final RefreshTokenService refreshTokenService;
     private final RefreshTokenRepository refreshTokenRepository;
     private final AuthenticationManager authenticationManager;
+    private final UserMapper userMapper;
 
 
     public LoginResponseDto login(LoginRequestDoo requestDoo) {
@@ -40,6 +42,7 @@ public class AuthService {
             RefreshToken refreshToken = refreshTokenService.getRefreshToken(user.getEmail());
 
             return LoginResponseDto.builder()
+                    .user(userMapper.toDto(user))
                     .accessToken(jwt)
                     .refreshToken(refreshToken.getToken())
                     .build();

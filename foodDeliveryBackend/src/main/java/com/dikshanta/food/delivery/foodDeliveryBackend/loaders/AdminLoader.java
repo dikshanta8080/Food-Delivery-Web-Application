@@ -1,6 +1,9 @@
 package com.dikshanta.food.delivery.foodDeliveryBackend.loaders;
 
 import com.dikshanta.food.delivery.foodDeliveryBackend.dtos.GeocodeCoordinates;
+import com.dikshanta.food.delivery.foodDeliveryBackend.exceptions.DistrictNotFoundException;
+import com.dikshanta.food.delivery.foodDeliveryBackend.exceptions.MunicipalityNotFoundException;
+import com.dikshanta.food.delivery.foodDeliveryBackend.exceptions.ProvinceNotFoundException;
 import com.dikshanta.food.delivery.foodDeliveryBackend.mappers.AddressMapper;
 import com.dikshanta.food.delivery.foodDeliveryBackend.models.*;
 import com.dikshanta.food.delivery.foodDeliveryBackend.repositories.*;
@@ -35,22 +38,48 @@ public class AdminLoader implements CommandLineRunner {
     @Transactional(propagation = Propagation.REQUIRED)
     public void run(String... args) throws Exception {
         if (!userRepository.existsByEmail(utils.getAdmin().getEmail())) {
-            Province province = provinceRepository.findByName("Koshi").orElseThrow(() -> new IllegalStateException("Province 'koshi' not found"));
-            District district = districtRepository.findByName("Sunsari").orElseThrow(() -> new IllegalStateException("District 'Sunsari' not found"));
-            Municipality municipality = municipalityRepository.findByName("Itahari").orElseThrow(() -> new IllegalStateException("Municipality 'Itahari' not found"));
-            GeocodeCoordinates geocodeCoordinates = geocodingService.geocodeAddress(province.getName(), district.getName(), municipality.getName());
+            Province province = getProvince();
+            District district = getDistrict();
+            Municipality municipality = getMunicipality();
+            GeocodeCoordinates geocodeCoordinates = getGeocodeCoordinates(province, district, municipality);
             Address address = addressMapper.apply(province, district, municipality, geocodeCoordinates);
             address.setDetailedAddress("Itahari 17 kanchichowk near police station in chatara road");
-            User admin = User.builder()
-                    .name(utils.getAdmin().getName())
-                    .email(utils.getAdmin().getEmail())
-                    .password(passwordEncoder.encode(utils.getAdmin().getPassword()))
-                    .role(ADMIN)
-                    .profileImageUrl("\\uploads\\images\\user\\admin.png")
-                    .build();
+            User admin = getUser();
             admin.addAddress(address);
             userRepository.save(admin);
 
         }
+    }
+
+    //Helper private methods
+    private User getUser() {
+        User admin = User.builder()
+                .name(utils.getAdmin().getName())
+                .email(utils.getAdmin().getEmail())
+                .password(passwordEncoder.encode(utils.getAdmin().getPassword()))
+                .role(ADMIN)
+                .profileImageUrl("\\uploads\\images\\user\\admin.png")
+                .build();
+        return admin;
+    }
+
+    private GeocodeCoordinates getGeocodeCoordinates(Province province, District district, Municipality municipality) {
+        GeocodeCoordinates geocodeCoordinates = geocodingService.geocodeAddress(province.getName(), district.getName(), municipality.getName());
+        return geocodeCoordinates;
+    }
+
+    private Municipality getMunicipality() {
+        Municipality municipality = municipalityRepository.findByName("Itahari").orElseThrow(() -> new MunicipalityNotFoundException("Municipality 'Itahari' not found"));
+        return municipality;
+    }
+
+    private District getDistrict() {
+        District district = districtRepository.findByName("Sunsari").orElseThrow(() -> new DistrictNotFoundException("District 'Sunsari' not found"));
+        return district;
+    }
+
+    private Province getProvince() {
+        Province province = provinceRepository.findByName("Koshi").orElseThrow(() -> new ProvinceNotFoundException("Province 'koshi' not found"));
+        return province;
     }
 }
