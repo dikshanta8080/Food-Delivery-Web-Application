@@ -6,19 +6,17 @@ import type {
 } from "../types/AuthTypes";
 const BASE_URL = "http://localhost:8090/api/v1/auth";
 
-//registration api
 export const signupApi = async (data: RegistrationRequest) => {
   try {
     const response: AxiosResponse<AuthApiResponse> =
       await axios.post<AuthApiResponse>(`${BASE_URL}/register`, data);
     return response.data;
   } catch (error) {
-    console.log(error);
+    alert("error occured while signup");
     throw error;
   }
 };
 
-//login api
 export const loginApi = async (data: LoginRequest) => {
   try {
     const response: AxiosResponse<AuthApiResponse> =

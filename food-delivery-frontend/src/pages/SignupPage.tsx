@@ -3,6 +3,7 @@ import { useState } from "react";
 import type { RegistrationRequest } from "../types/AuthTypes";
 import { signupApi } from "../services/AuthService.ts";
 import type { AuthApiResponse } from "../types/AuthTypes";
+import toast from "react-hot-toast";
 
 export default function SignupPage() {
   const [registrationRequest, setRegistrationRequest] =
@@ -15,9 +16,9 @@ export default function SignupPage() {
     console.log(registrationRequest.password);
     const response: AuthApiResponse = await signupApi(registrationRequest);
     if (response.status == true) {
-      alert("Signup successful");
+      toast.success("Signup successful");
     } else {
-      alert("Signup failed " + response.message);
+      toast.error("signup failed " + response.message);
     }
   };
   return (

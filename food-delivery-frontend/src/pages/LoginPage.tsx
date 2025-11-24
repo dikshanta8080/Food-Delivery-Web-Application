@@ -1,6 +1,40 @@
 import { Link } from "react-router-dom";
 
+import type { AuthApiResponse, LoginRequest } from "../types/AuthTypes";
+import { useState } from "react";
+import { loginApi } from "../services/AuthService";
+import AdminDashboard from "./dashboards/AdminDashboard";
+import RestaurantDashboard from "./dashboards/RestaurantDashboard";
+import LandingPage from "./LandingPage";
+
 export default function LoginPage() {
+  const [loginRequest, setLoginRequest] = useState<LoginRequest>({
+    email: "",
+    password: "",
+  });
+  const [role, setRole] = useState<string>("");
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(loginRequest.email);
+    console.log(loginRequest.password);
+    const response: AuthApiResponse = await loginApi(loginRequest);
+    if (response.status == true) {
+      const accessToken: string = response.responseObject.accessToken;
+      const resfreshToken: string = response.responseObject.refreshToken;
+      setRole(response.responseObject.user.role);
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", resfreshToken);
+      console.log(accessToken);
+      console.log(resfreshToken);
+    }
+  };
+  if (role == "ADMIN") {
+    return <AdminDashboard />;
+  } else if (role == "RESTAURANT") {
+    return <RestaurantDashboard />;
+  } else if (role == "CUSTOMER") {
+    return <LandingPage />;
+  }
   return (
     <div className="min-h-screen bg-gray-950 flex items-center justify-center px-4 relative overflow-hidden">
       {/* Subtle warm glows */}
@@ -22,13 +56,17 @@ export default function LoginPage() {
             </p>
           </div>
 
-          <form className="space-y-5">
+          <form className="space-y-5" onSubmit={(e) => handleFormSubmit(e)}>
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 Email Address
               </label>
               <input
                 type="email"
+                value={loginRequest.email}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  setLoginRequest({ ...loginRequest, email: e.target.value });
+                }}
                 required
                 placeholder="you@example.com"
                 className="w-full px-5 py-3.5 bg-gray-800/70 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition"
@@ -41,6 +79,13 @@ export default function LoginPage() {
               </label>
               <input
                 type="password"
+                value={loginRequest.password}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  setLoginRequest({
+                    ...loginRequest,
+                    password: e.target.value,
+                  });
+                }}
                 required
                 placeholder="••••••••"
                 className="w-full px-5 py-3.5 bg-gray-800/70 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition"
