@@ -5,12 +5,18 @@ export interface AuthApiResponse {
   responseObject: {
     accessToken: string;
     refreshToken: string;
+    user: {
+      id: number;
+      name: string;
+      email: string;
+      role: string;
+    };
   };
 }
 export interface RegistrationRequest {
-  name: "string";
-  email: "string";
-  password: "string";
+  name: string;
+  email: string;
+  password: string;
 }
 
 export interface LoginRequest {

@@ -1,10 +1,11 @@
 import React from "react";
+import { Outlet } from "react-router-dom";
 
 const App = () => {
   return (
-    <div>
-      <h1>Hello from 5173</h1>
-    </div>
+    <>
+      <Outlet></Outlet>
+    </>
   );
 };
 
