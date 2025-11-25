@@ -3,7 +3,6 @@ import { useState } from "react";
 import type { RegistrationRequest } from "../types/AuthTypes";
 import { signupApi } from "../services/AuthService.ts";
 import type { AuthApiResponse } from "../types/AuthTypes";
-import toast from "react-hot-toast";
 
 export default function SignupPage() {
   const [registrationRequest, setRegistrationRequest] =
@@ -16,9 +15,9 @@ export default function SignupPage() {
     console.log(registrationRequest.password);
     const response: AuthApiResponse = await signupApi(registrationRequest);
     if (response.status == true) {
-      toast.success("Signup successful");
+      alert("Signup successful");
     } else {
-      toast.error("signup failed " + response.message);
+      alert("Signup failed");
     }
   };
   return (
@@ -77,7 +76,7 @@ export default function SignupPage() {
                     email: e.target.value,
                   });
                 }}
-                placeholder="you@example.com"
+                placeholder="youemail@example.com"
                 className="w-full px-5 py-3.5 bg-gray-800/70 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition"
               />
             </div>
@@ -97,7 +96,7 @@ export default function SignupPage() {
                 }}
                 required
                 minLength={6}
-                placeholder="••••••••"
+                placeholder="enter your password"
                 className="w-full px-5 py-3.5 bg-gray-800/70 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition"
               />
             </div>

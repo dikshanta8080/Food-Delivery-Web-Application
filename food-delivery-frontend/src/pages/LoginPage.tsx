@@ -68,7 +68,7 @@ export default function LoginPage() {
                   setLoginRequest({ ...loginRequest, email: e.target.value });
                 }}
                 required
-                placeholder="you@example.com"
+                placeholder="yourgmail@example.com"
                 className="w-full px-5 py-3.5 bg-gray-800/70 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition"
               />
             </div>
@@ -87,7 +87,7 @@ export default function LoginPage() {
                   });
                 }}
                 required
-                placeholder="••••••••"
+                placeholder="enter your password"
                 className="w-full px-5 py-3.5 bg-gray-800/70 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition"
               />
             </div>
