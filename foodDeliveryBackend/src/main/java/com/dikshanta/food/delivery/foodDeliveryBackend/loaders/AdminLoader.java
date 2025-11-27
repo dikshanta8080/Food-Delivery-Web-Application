@@ -20,8 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 import static com.dikshanta.food.delivery.foodDeliveryBackend.enums.Role.ADMIN;
 
 @Component
-@RequiredArgsConstructor
 @Order(2)
+@RequiredArgsConstructor
 public class AdminLoader implements CommandLineRunner {
     private final UserRepository userRepository;
     private final Utils utils;

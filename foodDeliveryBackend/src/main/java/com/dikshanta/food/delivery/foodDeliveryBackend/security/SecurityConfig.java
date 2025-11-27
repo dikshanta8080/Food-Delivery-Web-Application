@@ -32,8 +32,6 @@ import static com.dikshanta.food.delivery.foodDeliveryBackend.enums.Role.*;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
-
     private static final String adminRoute = "/api/v1/admin/**";
     private static final String restaurantManagementRoute = "/api/v1/restaurant/**";
     private static final String publicRoute = "/api/v1/public/**";

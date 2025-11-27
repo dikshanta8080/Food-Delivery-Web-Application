@@ -2,6 +2,7 @@ package com.dikshanta.food.delivery.foodDeliveryBackend.controllers;
 
 import com.dikshanta.food.delivery.foodDeliveryBackend.dtos.AddDeliveryRequestDto;
 import com.dikshanta.food.delivery.foodDeliveryBackend.dtos.AddDeliveryResponseDto;
+import com.dikshanta.food.delivery.foodDeliveryBackend.dtos.AddressDeleteRequestDto;
 import com.dikshanta.food.delivery.foodDeliveryBackend.responses.ApiResponse;
 import com.dikshanta.food.delivery.foodDeliveryBackend.services.AddressService;
 import lombok.RequiredArgsConstructor;
@@ -29,5 +30,18 @@ public class CustomerController {
         return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
 
     }
+
+    @PostMapping("/remove-address")
+    public ResponseEntity<ApiResponse<String>> removeAddress(AddressDeleteRequestDto requestDto) {
+        String responseMessage = addressService.removeAddress(requestDto);
+        ApiResponse<String> apiResponse = ApiResponse.<String>builder()
+                .status(true)
+                .httpStatus(HttpStatus.OK)
+                .message("Address removed successfully")
+                .responseObject(responseMessage)
+                .build();
+        return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
+    }
+
 
 }

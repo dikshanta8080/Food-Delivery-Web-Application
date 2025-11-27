@@ -33,4 +33,5 @@ public class Address extends DateAuditable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "municipality_id", referencedColumnName = "id")
     private Municipality municipality;
+
 }

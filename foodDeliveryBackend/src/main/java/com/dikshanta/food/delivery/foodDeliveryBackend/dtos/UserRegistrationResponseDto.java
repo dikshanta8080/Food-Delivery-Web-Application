@@ -15,4 +15,5 @@ public class UserRegistrationResponseDto {
     private String name;
     private String email;
     private Role role;
+    private String profileImageUrl;
 }

@@ -14,6 +14,5 @@ public class HealthController {
     public ResponseEntity<String> checkHealth(HttpServletRequest request) {
         String response = String.format("Tomcat is running in 8080 with session if %s", request.getSession().getId());
         return new ResponseEntity<>(response, HttpStatus.OK);
-
     }
 }

@@ -1,4 +1,4 @@
-package com.dikshanta.food.delivery.foodDeliveryBackend.handlers;
+package com.dikshanta.food.delivery.foodDeliveryBackend.configurations;
 
 import com.dikshanta.food.delivery.foodDeliveryBackend.services.UserPrincipal;
 import org.springframework.data.domain.AuditorAware;

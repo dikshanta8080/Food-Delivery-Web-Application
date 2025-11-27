@@ -16,5 +16,6 @@ public class UserRegistrationRequestDto {
     private String email;
     @NotBlank(message = "Please provide non blank and valid password")
     private String password;
+   
 
 }

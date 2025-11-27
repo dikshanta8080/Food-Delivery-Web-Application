@@ -3,10 +3,9 @@ package com.dikshanta.food.delivery.foodDeliveryBackend.services;
 import com.dikshanta.food.delivery.foodDeliveryBackend.dtos.UserRegistrationRequestDto;
 import com.dikshanta.food.delivery.foodDeliveryBackend.dtos.UserRegistrationResponseDto;
 import com.dikshanta.food.delivery.foodDeliveryBackend.exceptions.UserAlreadyExistsException;
-import com.dikshanta.food.delivery.foodDeliveryBackend.mappers.AddressMapper;
 import com.dikshanta.food.delivery.foodDeliveryBackend.mappers.UserMapper;
 import com.dikshanta.food.delivery.foodDeliveryBackend.models.User;
-import com.dikshanta.food.delivery.foodDeliveryBackend.repositories.*;
+import com.dikshanta.food.delivery.foodDeliveryBackend.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,12 +19,6 @@ import static com.dikshanta.food.delivery.foodDeliveryBackend.enums.Role.CUSTOME
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-    private final AddressRepository addressRepository;
-    private final ProvinceRepository provinceRepository;
-    private final DistrictRepository districtRepository;
-    private final MunicipalityRepository municipalityRepository;
-    private final AddressMapper addressMapper;
-    private final GeocodingService geocodingService;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
 

@@ -2,6 +2,7 @@ package com.dikshanta.food.delivery.foodDeliveryBackend.services;
 
 import com.dikshanta.food.delivery.foodDeliveryBackend.dtos.AddDeliveryRequestDto;
 import com.dikshanta.food.delivery.foodDeliveryBackend.dtos.AddDeliveryResponseDto;
+import com.dikshanta.food.delivery.foodDeliveryBackend.dtos.AddressDeleteRequestDto;
 import com.dikshanta.food.delivery.foodDeliveryBackend.dtos.GeocodeCoordinates;
 import com.dikshanta.food.delivery.foodDeliveryBackend.exceptions.*;
 import com.dikshanta.food.delivery.foodDeliveryBackend.mappers.AddDeliveryAddressResponseDtoMapper;
@@ -13,6 +14,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -27,15 +32,15 @@ public class AddressService {
     private final GeocodingService geocodingService;
     private final AddDeliveryAddressResponseDtoMapper deliveryAddressResponseDtoMapper;
 
-    public AddDeliveryResponseDto addDeliveryAddress(AddDeliveryRequestDto requestDto) {
-        //start
+    private static Long extractUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
-        log.debug(userPrincipal.getUsername());
-        //end
-        
-        // currently logged-in user
-        User user = getUser(userPrincipal.getId());
+        return userPrincipal.getId();
+    }
+
+    public AddDeliveryResponseDto addDeliveryAddress(AddDeliveryRequestDto requestDto) {
+        Long loggedInUserId = extractUserId();
+        User user = getUser(loggedInUserId);
         Province province = getProvince(requestDto.getProvinceId());
         District district = getDistrict(requestDto.getDistrictId());
         Municipality municipality = getMunicipality(requestDto.getMunicipalityId());
@@ -81,5 +86,20 @@ public class AddressService {
         return userRepository.findById(userId).orElseThrow(() ->
                 new UserDoesNotExistsException("User with this id does not exists"));
 
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public String removeAddress(AddressDeleteRequestDto requestDto) {
+        Long currentlyLoggedInUserId = extractUserId();
+        User loggedInUser = userRepository.findById(currentlyLoggedInUserId).orElseThrow(() ->
+                new UserDoesNotExistsException("There are not any logged in user"));
+        List<Address> addresses = loggedInUser.getAddresses();
+        Address address1 = addresses.stream().filter(address ->
+                        address.getId() == requestDto.getAddressId())
+                .findFirst()
+                .orElseThrow(() -> new AddressNotFoundException("Address with this id not found"));
+        addresses.remove(address1);
+        addressRepository.saveAll(addresses);
+        return "Address with this id removed from db";
     }
 }
