@@ -4,10 +4,13 @@ import "./index.css";
 import App from "./App.tsx";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./routes/Routes.tsx";
+import { PasswordResetProvider } from "./context/PasswordResetContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <RouterProvider router={router}></RouterProvider>
-    <App />
+    <PasswordResetProvider>
+      <RouterProvider router={router}></RouterProvider>
+      <App />
+    </PasswordResetProvider>
   </StrictMode>
 );
