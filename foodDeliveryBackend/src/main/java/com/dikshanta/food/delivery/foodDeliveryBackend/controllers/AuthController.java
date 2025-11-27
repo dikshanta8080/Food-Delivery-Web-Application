@@ -8,10 +8,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -54,6 +51,30 @@ public class AuthController {
                 .httpStatus(HttpStatus.OK)
                 .message("Refreshed the tokens")
                 .responseObject(tokenRefreshResponseDoo)
+                .build();
+        return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
+    }
+
+    @GetMapping("/forgot-password/{email}")
+    public ResponseEntity<ApiResponse<String>> sendResetRequest(@PathVariable String email) {
+        String message = authService.forgetPassword(email);
+        ApiResponse<String> apiResponse = ApiResponse.<String>builder()
+                .status(true)
+                .httpStatus(HttpStatus.OK)
+                .message("Successfully sent the reset message")
+                .responseObject(message)
+                .build();
+        return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<ApiResponse<String>> verifyReset(PasswordResetRequestDto requestDto) {
+        String message = authService.resetPasswordConfirmation(requestDto);
+        ApiResponse<String> apiResponse = ApiResponse.<String>builder()
+                .status(true)
+                .httpStatus(HttpStatus.OK)
+                .message("Successfully sent the reset message")
+                .responseObject(message)
                 .build();
         return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
     }

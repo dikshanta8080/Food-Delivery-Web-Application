@@ -1,22 +1,23 @@
 package com.dikshanta.food.delivery.foodDeliveryBackend.services;
 
-import com.dikshanta.food.delivery.foodDeliveryBackend.dtos.LoginRequestDoo;
-import com.dikshanta.food.delivery.foodDeliveryBackend.dtos.LoginResponseDto;
-import com.dikshanta.food.delivery.foodDeliveryBackend.dtos.TokenRefreshRequestDto;
-import com.dikshanta.food.delivery.foodDeliveryBackend.dtos.TokenRefreshResponseDoo;
-import com.dikshanta.food.delivery.foodDeliveryBackend.exceptions.RefreshTokenDoesNotExistsException;
-import com.dikshanta.food.delivery.foodDeliveryBackend.exceptions.RefreshTokenExpiredException;
-import com.dikshanta.food.delivery.foodDeliveryBackend.exceptions.UserDoesNotExistsException;
+import com.dikshanta.food.delivery.foodDeliveryBackend.dtos.*;
+import com.dikshanta.food.delivery.foodDeliveryBackend.events.OtpGeneratedEvent;
+import com.dikshanta.food.delivery.foodDeliveryBackend.exceptions.*;
 import com.dikshanta.food.delivery.foodDeliveryBackend.mappers.UserMapper;
+import com.dikshanta.food.delivery.foodDeliveryBackend.models.PasswordResetToken;
 import com.dikshanta.food.delivery.foodDeliveryBackend.models.RefreshToken;
 import com.dikshanta.food.delivery.foodDeliveryBackend.models.User;
+import com.dikshanta.food.delivery.foodDeliveryBackend.repositories.PasswordResetTokenRepository;
 import com.dikshanta.food.delivery.foodDeliveryBackend.repositories.RefreshTokenRepository;
 import com.dikshanta.food.delivery.foodDeliveryBackend.repositories.UserRepository;
+import com.dikshanta.food.delivery.foodDeliveryBackend.utils.Utils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -30,6 +31,12 @@ public class AuthService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final AuthenticationManager authenticationManager;
     private final UserMapper userMapper;
+    private final PasswordResetTokenService passwordResetTokenService;
+    private final EmailService emailService;
+    private final Utils utils;
+    private final ApplicationEventPublisher eventPublisher;
+    private final PasswordResetTokenRepository passwordResetTokenRepository;
+    private final PasswordEncoder passwordEncoder;
 
 
     public LoginResponseDto login(LoginRequestDoo requestDoo) {
@@ -70,4 +77,29 @@ public class AuthService {
                 .refreshToken(newRefreshToken.getToken())
                 .build();
     }
+
+    public String forgetPassword(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(() ->
+                new UserDoesNotExistsException("User does not exists"));
+        PasswordResetToken passwordResetToken = passwordResetTokenService.getPasswordResetToken(user);
+        eventPublisher.publishEvent(new OtpGeneratedEvent(this, user.getEmail(), passwordResetToken.getToken()));
+        return "Otp sent to the email";
+
+    }
+
+    public String resetPasswordConfirmation(PasswordResetRequestDto requestDto) {
+        User user = userRepository.findByEmail(requestDto.getEmail()).orElseThrow(() -> new UserDoesNotExistsException("User with this email does not exists"));
+        PasswordResetToken passwordResetToken = passwordResetTokenRepository.findByUserAndToken(user, requestDto.getOtp()).orElseThrow(() -> new TokenDoesNotExistsException("Token does not exists"));
+        if (passwordResetToken.getExpiry().isBefore(Instant.now())) {
+            passwordResetTokenRepository.delete(passwordResetToken);
+            throw new OtpExpiredException("Otp is already expired");
+        }
+        user.setPassword(passwordEncoder.encode(requestDto.getNewPassword()));
+        userRepository.save(user);
+        passwordResetTokenRepository.delete(passwordResetToken);
+        return "Password changed successfully";
+
+    }
+
+
 }
