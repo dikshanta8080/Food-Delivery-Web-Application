@@ -2,6 +2,7 @@ package com.dikshanta.food.delivery.foodDeliveryBackend.services;
 
 import com.dikshanta.food.delivery.foodDeliveryBackend.dtos.*;
 import com.dikshanta.food.delivery.foodDeliveryBackend.events.OtpGeneratedEvent;
+import com.dikshanta.food.delivery.foodDeliveryBackend.events.PasswordResetEvent;
 import com.dikshanta.food.delivery.foodDeliveryBackend.exceptions.*;
 import com.dikshanta.food.delivery.foodDeliveryBackend.mappers.UserMapper;
 import com.dikshanta.food.delivery.foodDeliveryBackend.models.PasswordResetToken;
@@ -10,7 +11,6 @@ import com.dikshanta.food.delivery.foodDeliveryBackend.models.User;
 import com.dikshanta.food.delivery.foodDeliveryBackend.repositories.PasswordResetTokenRepository;
 import com.dikshanta.food.delivery.foodDeliveryBackend.repositories.RefreshTokenRepository;
 import com.dikshanta.food.delivery.foodDeliveryBackend.repositories.UserRepository;
-import com.dikshanta.food.delivery.foodDeliveryBackend.utils.Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,8 +32,6 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final UserMapper userMapper;
     private final PasswordResetTokenService passwordResetTokenService;
-    private final EmailService emailService;
-    private final Utils utils;
     private final ApplicationEventPublisher eventPublisher;
     private final PasswordResetTokenRepository passwordResetTokenRepository;
     private final PasswordEncoder passwordEncoder;
@@ -97,6 +95,7 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(requestDto.getNewPassword()));
         userRepository.save(user);
         passwordResetTokenRepository.delete(passwordResetToken);
+        eventPublisher.publishEvent(new PasswordResetEvent(this, user.getEmail(), user.getName()));
         return "Password changed successfully";
 
     }

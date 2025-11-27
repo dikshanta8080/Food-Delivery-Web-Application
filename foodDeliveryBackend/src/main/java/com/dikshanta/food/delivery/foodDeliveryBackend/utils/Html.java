@@ -70,4 +70,47 @@ public class Html {
                 "</html>\n", otp);
     }
 
+    public static String getPasswordResetConfirmation(String name) {
+        String year = String.valueOf(java.time.Year.now().getValue());
+
+        return String.format("""
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                  <meta charset="utf-8" />
+                  <meta name="viewport" content="width=device-width,initial-scale=1" />
+                  <title>Password Reset Successful</title>
+                  <style>
+                    body { margin:0; padding:0; font-family:Arial, sans-serif; background:#f4f6f8; color:#333; }
+                    .wrap { max-width:600px; margin:36px auto; background:#ffffff; border-radius:8px; box-shadow:0 6px 18px rgba(0,0,0,0.06); overflow:hidden; }
+                    .header { padding:28px 32px; text-align:center; background:linear-gradient(90deg,#1e8af7,#3bb0ff); color:#fff; }
+                    .content { padding:28px 32px; }
+                    .footer { padding:18px 32px; font-size:13px; color:#94a3b8; border-top:1px solid #f1f5f9; text-align:center; }
+                  </style>
+                </head>
+                <body>
+                  <div class="wrap">
+                    <div class="header">
+                      <h1>Password Reset Successful</h1>
+                    </div>
+                
+                    <div class="content" style="text-align:center;">
+                      <h2>You're all set, %s</h2>
+                      <p>Your password has been successfully updated.</p>
+                      <a href="%s" style="background:#10b981;color:#fff;padding:12px 20px;text-decoration:none;border-radius:8px;font-weight:600;">
+                        Sign in to your account
+                      </a>
+                
+                    </div>
+                
+                    <div class="footer">
+                      &copy;  Your Company • Keeping your account secure
+                    </div>
+                  </div>
+                </body>
+                </html>
+                """, name, "http://localhost:3000");
+    }
+
+
 }
