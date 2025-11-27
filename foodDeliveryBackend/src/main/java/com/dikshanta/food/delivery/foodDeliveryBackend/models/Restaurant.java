@@ -13,15 +13,21 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Category {
+public class Restaurant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
     private String name;
-    @OneToMany(mappedBy = "category")
+    private String address;
+    private String openingTime;
+    private String closingTime;
+    private boolean openStatus;
+    private String imageUrl;
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+    @OneToMany(mappedBy = "restaurant")
     private List<FoodItem> foodItems;
-    @ManyToOne
-    @JoinColumn(name = "restaurant_id", referencedColumnName = "id")
-    private Restaurant restaurant;
+    @OneToMany(mappedBy = "restaurant")
+    private List<Category> categories;
 }

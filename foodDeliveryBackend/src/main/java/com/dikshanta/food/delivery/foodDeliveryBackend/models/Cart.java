@@ -8,20 +8,19 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@Entity
 @Data
 @NoArgsConstructor
+@Entity
 @AllArgsConstructor
 @Builder
-public class Category {
+public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
-    private String name;
-    @OneToMany(mappedBy = "category")
-    private List<FoodItem> foodItems;
-    @ManyToOne
-    @JoinColumn(name = "restaurant_id", referencedColumnName = "id")
-    private Restaurant restaurant;
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+    @OneToMany(mappedBy = "cart", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<CartItem> cartItems;
+
 }

@@ -43,6 +43,10 @@ public class User extends DateAuditable {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
+    @OneToOne(mappedBy = "user")
+    private Restaurant restaurant;
+    @OneToOne(mappedBy = "user", orphanRemoval = true, cascade = {CascadeType.ALL})
+    private Cart cart;
 
     public User() {
         this.addresses = new ArrayList<>();
