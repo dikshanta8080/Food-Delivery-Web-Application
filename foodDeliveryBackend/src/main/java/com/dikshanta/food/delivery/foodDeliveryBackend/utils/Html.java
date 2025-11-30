@@ -63,7 +63,7 @@ public class Html {
                 "    <p>If you did not request a password reset, please ignore this email.</p>\n" +
                 "    \n" +
                 "    <div class=\"footer\">\n" +
-                "      &copy; 2025 Your Company. All rights reserved.\n" +
+                "      &copy; 2025 FoodRush. All rights reserved.\n" +
                 "    </div>\n" +
                 "  </div>\n" +
                 "</body>\n" +
@@ -104,7 +104,7 @@ public class Html {
                     </div>
                 
                     <div class="footer">
-                      &copy;  Your Company • Keeping your account secure
+                      &copy;  FoodRush • Keeping your account secure
                     </div>
                   </div>
                 </body>
